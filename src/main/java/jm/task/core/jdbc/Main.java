@@ -9,7 +9,7 @@ public class Main {
         userService.createUsersTable();
         userService.saveUser("David", "Black", (byte) 36);
         userService.saveUser("Sarah", "Red", (byte) 45);
-        userService.saveUser("Latifa", "Yellow", (byte) 33);
+        userService.saveUser("Latif", "Yellow", (byte) 33);
         userService.saveUser("Kevin", "Brown", (byte) 24);
         userService.getAllUsers();
         userService.cleanUsersTable();
