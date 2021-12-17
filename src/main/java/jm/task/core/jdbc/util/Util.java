@@ -1,11 +1,16 @@
 package jm.task.core.jdbc.util;
 
+import com.fasterxml.classmate.AnnotationConfiguration;
+import jm.task.core.jdbc.model.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
+
+import org.hibernate.cfg.Configuration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +19,7 @@ import java.util.Map;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 
 public class Util {
@@ -39,29 +45,39 @@ public class Util {
     private static SessionFactory sessionFactory;
 
     public static SessionFactory getSessionFactory() {
-            // Hibernate 5.4 SessionFactory example without XML
-            Map<String, String> settings = new HashMap<>();
-            settings.put("connection.driver_class", "com.mysql.jdbc.Driver");
-            settings.put("dialect", "org.hibernate.dialect.MySQL8Dialect");
-            settings.put("hibernate.connection.url", HOST);
-            settings.put("hibernate.connection.username", LOGIN);
-            settings.put("hibernate.connection.password", PASSWORD);
-            settings.put("hibernate.current_session_context_class", "thread");
-            settings.put("hibernate.show_sql", "true");
-            settings.put("hibernate.format_sql", "true");
+        if (sessionFactory == null) {
+            try {
+                Configuration configuration = new Configuration();
 
-            ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-                    .applySettings(settings).build();
+                Properties settings = new Properties();
+                settings.put(Environment.DRIVER, DRIVER);
+                settings.put(Environment.URL, HOST);
+                settings.put(Environment.USER, LOGIN);
+                settings.put(Environment.PASS, PASSWORD);
+                settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
 
-            MetadataSources metadataSources = new MetadataSources(serviceRegistry);
-            // metadataSources.addAnnotatedClass(Player.class);
-            Metadata metadata = metadataSources.buildMetadata();
+                settings.put(Environment.SHOW_SQL, "true");
 
-            // here we build the SessionFactory (Hibernate 5.4)
-            SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
+                settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
 
-            return sessionFactory;
+                settings.put(Environment.HBM2DDL_AUTO, "create-drop");
+
+                configuration.setProperties(settings);
+
+                configuration.addAnnotatedClass(User.class);
+
+                ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+                        .applySettings(configuration.getProperties()).build();
+
+                sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return sessionFactory;
     }
+}
+
+
 
 
