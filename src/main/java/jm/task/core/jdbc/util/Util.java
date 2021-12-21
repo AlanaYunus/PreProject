@@ -1,20 +1,14 @@
 package jm.task.core.jdbc.util;
 
-import com.fasterxml.classmate.AnnotationConfiguration;
 import jm.task.core.jdbc.model.User;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
+
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
 
 import org.hibernate.cfg.Configuration;
-
-import java.util.HashMap;
-import java.util.Map;
-
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -29,6 +23,16 @@ public class Util {
     private static final String LOGIN = "Alana";
     private static final String PASSWORD = "1234";
 
+    private Util() {
+    }
+
+    private static class LazyHolder {
+        public static final Util INSTANCE = new Util();
+    }
+
+    public static Util getInstance() {
+        return LazyHolder.INSTANCE;
+    }
 
     public static Connection getConnection() {
         Connection connection = null;
@@ -61,6 +65,7 @@ public class Util {
                 settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
 
                 settings.put(Environment.HBM2DDL_AUTO, "create-drop");
+//                 settings.put(Environment.HBM2DDL_AUTO, "update");
 
                 configuration.setProperties(settings);
 
