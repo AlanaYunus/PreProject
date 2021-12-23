@@ -16,8 +16,16 @@ public class UserDaoHibernateImpl implements UserDao {
 
     private SessionFactory sessionFactory = getSessionFactory();
 
-    public UserDaoHibernateImpl() {
+    private UserDaoHibernateImpl() {
+    }
 
+    private static UserDaoHibernateImpl instance;
+
+    public static UserDaoHibernateImpl getInstance() {
+        if (instance == null) {
+            instance = new UserDaoHibernateImpl();
+        }
+        return instance;
     }
 
     @Override

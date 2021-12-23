@@ -26,14 +26,6 @@ public class Util {
     private Util() {
     }
 
-    private static class LazyHolder {
-        public static final Util INSTANCE = new Util();
-    }
-
-    public static Util getInstance() {
-        return LazyHolder.INSTANCE;
-    }
-
     public static Connection getConnection() {
         Connection connection = null;
         try {
