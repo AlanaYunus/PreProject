@@ -23,7 +23,16 @@ public class Util {
     private static final String LOGIN = "Alana";
     private static final String PASSWORD = "1234";
 
+    private static Util instance;
+
     private Util() {
+    }
+
+    public static Util getInstance() {
+        if (instance == null) {
+            instance = new Util();
+        }
+        return instance;
     }
 
     public static Connection getConnection() {
@@ -38,9 +47,9 @@ public class Util {
     }
 
 
-    private static SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
-    public static SessionFactory getSessionFactory() {
+    public SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             try {
                 Configuration configuration = new Configuration();

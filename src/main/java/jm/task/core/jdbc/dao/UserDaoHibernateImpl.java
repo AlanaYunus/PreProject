@@ -3,18 +3,11 @@ package jm.task.core.jdbc.dao;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 import org.hibernate.*;
-import org.hibernate.hql.internal.ast.util.SessionFactoryHelper;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
-import java.util.logging.Logger;
-
-import static jm.task.core.jdbc.util.Util.getSessionFactory;
 
 public class UserDaoHibernateImpl implements UserDao {
 
-    private SessionFactory sessionFactory = getSessionFactory();
+    private SessionFactory sessionFactory = Util.getInstance().getSessionFactory();
 
     private UserDaoHibernateImpl() {
     }
